@@ -29,57 +29,85 @@ int main() {
     while (fin1 >> colors[i++]);
     fin1.close();
 
-    /*list<Goat> tempL;
-    for (int i = 0; i < 10; i++)
-        add_goat(tempL, names, colors);
+    int choice = 0;
+    list<Goat> goatList;
+    do {
+        choice = main_menu();
+
+        if (choice == 1) {
+            add_goat(goatList, names, colors);
+        }
+        if (choice == 2) {
+            delete_goat(goatList);
+        }
+        if (choice == 3) {
+            display_trip(goatList);
+        }
+        if (choice == 4) {
+            cout << "You have chosen to exit the program. Goodbye!" << endl;
+        }
+    } while (choice != 4);
+
     
-    display_trip(tempL);
-    delete_goat(tempL);
-    display_trip(tempL);*/
     return 0;
 }
 
 int main_menu() {
-    int choice;
+    int c;  // holds choice
     cout << "*** GOAT MANAGER 3001 ***" << endl
          << "[1] Add a goat" << endl
          << "[2] Delete a goat" << endl
          << "[3] List goats" << endl
          << "[4] Quit" << endl
          << "Choice: ";
-    cin >> choice;
-    while (choice < 1 || choice > 4) {
+    cin >> c;
+    while (c < 1 || c > 4) {
         cout << "\tError! Please enter a number 1-4: ";
-        cin >> choice;
+        cin >> c;
     }
+    cout << endl;
 
-    return choice;
+    return c;
 }
 
 void display_trip(list<Goat> trip) {
-    int i = 1;  //counter
-    cout << "Current trip: " << endl;
-    for (Goat g : trip) {
-        cout << "[" << i++ << "] " << g.get_name()
-             << " (" << g.get_age() << ", " << g.get_color() << ")" << endl;
+    if (trip.size() == 0) {
+        cout << "Error! No goats in the trip. Going back to menu." 
+             << endl << endl;
+    }
+    else {
+        int i = 1;  //counter
+        cout << "Current trip: " << endl;
+        for (Goat g : trip) {
+            cout << "\t[" << i++ << "] " << g.get_name()
+                << " (" << g.get_age() << ", " << g.get_color() << ")" << endl;
+        }
+        cout << endl;
     }
 }
 
 void delete_goat(list<Goat> &trip) {
     int d, p = 1;
-    display_trip(trip);
-    cout << "Please enter the number of the goat to be deleted: ";
-    cin >> d;
-    while (d < 1 || d > trip.size()) {
-        cout << "Error! Please enter a number between 1 -" 
-             << trip.size() << ": ";
-        cin >> d;
+    if (trip.size() == 0) {
+        cout << "Error! No goats in the trip. Going back to menu." 
+             << endl << endl;
     }
-    auto it = trip.begin();
-    for (int i = 1; i < d; i++)
-        it++;
+    else {
+        display_trip(trip);
+        cout << "Please enter the number of the goat to be deleted: ";
+        cin >> d;
+        while (d < 1 || d > trip.size()) {
+            cout << "Error! Please enter a number between 1 -" 
+                << trip.size() << ": ";
+            cin >> d;
+        }
+        auto it = trip.begin();
+        for (int i = 1; i < d; i++)
+            it++;
 
-    trip.erase(it);
+        cout << it->get_name() << " has been erased" << endl << endl;
+        trip.erase(it);
+    }
 }
 
 void add_goat(list<Goat> &trip, string n[], string c[]) {
@@ -93,4 +121,5 @@ void add_goat(list<Goat> &trip, string n[], string c[]) {
     Goat tempG(tempN, r, tempC);
 
     trip.push_back(tempG);
+    cout << "A goat has been added to the list." << endl << endl;
 }
