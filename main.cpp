@@ -1,16 +1,16 @@
 #include <iostream>
 #include <fstream>
 #include <iomanip>
-#include <list>
+#include <set>
 #include "Goat.h"
 using namespace std;
 
 const int SZ_NAMES = 200, SZ_COLORS = 25, MAX_AGE = 20;
 
-int select_goat(list<Goat> trip);
-void delete_goat(list<Goat> &trip);
-void add_goat(list<Goat> &trip, string [], string []);
-void display_trip(list<Goat> trip);
+int select_goat(set<Goat> trip);
+void delete_goat(set<Goat> &trip);
+void add_goat(set<Goat> &trip, string [], string []);
+void display_trip(set<Goat> trip);
 int main_menu();
 
 int main() {
@@ -30,7 +30,7 @@ int main() {
     fin1.close();
 
     int choice = 0;
-    list<Goat> goatList;
+    set<Goat> goatList;
     do {
         choice = main_menu();
 
@@ -44,7 +44,7 @@ int main() {
             display_trip(goatList);
         }
         if (choice == 4) {
-            cout << "You have chosen to exit the program. Goodbye!" << endl;
+            cout << "\tYou have chosen to exit the program. Goodbye!" << endl;
         }
     } while (choice != 4);
 
@@ -70,7 +70,7 @@ int main_menu() {
     return c;
 }
 
-void display_trip(list<Goat> trip) {
+void display_trip(set<Goat> trip) {
     if (trip.size() == 0) {
         cout << "Error! No goats in the trip. Going back to menu." 
              << endl << endl;
@@ -86,7 +86,7 @@ void display_trip(list<Goat> trip) {
     }
 }
 
-void delete_goat(list<Goat> &trip) {
+void delete_goat(set<Goat> &trip) {
     int d, p = 1;
     if (trip.size() == 0) {
         cout << "Error! No goats in the trip. Going back to menu." 
@@ -97,7 +97,7 @@ void delete_goat(list<Goat> &trip) {
         cout << "Please enter the number of the goat to be deleted: ";
         cin >> d;
         while (d < 1 || d > trip.size()) {
-            cout << "Error! Please enter a number between 1 -" 
+            cout << "Error! Please enter a number between 1-" 
                 << trip.size() << ": ";
             cin >> d;
         }
@@ -110,7 +110,7 @@ void delete_goat(list<Goat> &trip) {
     }
 }
 
-void add_goat(list<Goat> &trip, string n[], string c[]) {
+void add_goat(set<Goat> &trip, string n[], string c[]) {
     int r = 0;
     string tempN, tempC;
     r = rand() % (SZ_NAMES + 1);
@@ -120,6 +120,6 @@ void add_goat(list<Goat> &trip, string n[], string c[]) {
     r = rand() % (MAX_AGE + 1);
     Goat tempG(tempN, r, tempC);
 
-    trip.push_back(tempG);
+    trip.insert(tempG);
     cout << "A goat has been added to the list." << endl << endl;
 }
